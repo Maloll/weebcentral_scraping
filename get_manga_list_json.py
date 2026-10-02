@@ -8,7 +8,7 @@ headers = {
 }
 
 # Get a manga list from weebcentral
-def get_manga_json(number_of_pages=10):
+def get_manga_json(number_of_pages=10, save=True):
     if number_of_pages < 1:
         number_of_pages = 1
         print("Error: Number of pages must be greater than 0")
@@ -41,6 +41,9 @@ def get_manga_json(number_of_pages=10):
                 })
         print(f"Scraped {i} pages && {len(results)} mangas")
 
-    # Save the results to a .json file
-    with open("data.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+    if save:
+        # Save the results to a .json file
+        with open("data.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, indent=2)
+
+    return results
