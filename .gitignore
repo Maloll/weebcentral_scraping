@@ -1,3 +1,7 @@
 data.json
 exemple.html
 _pycache_/*
+__pycache__/get_manga_list_json.cpython-312.pyc
+__pycache__/get_manga_list_json.cpython-314.pyc
+__pycache__/scrap_utils.cpython-314.pyc
+test.py
