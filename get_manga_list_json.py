@@ -7,6 +7,7 @@ headers = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
+# Get a manga list from weebcentral
 def get_manga_json(number_of_pages=10):
     if number_of_pages < 1:
         number_of_pages = 1
@@ -17,11 +18,12 @@ def get_manga_json(number_of_pages=10):
         offset = i * 32
         api = f"https://weebcentral.com/search/data?limit=32&offset={offset}&display_mode=Full+Display&display_mode=Full+Display&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False&included_type=Manga"
 
-        # get data from api
+        # Get data from api
         response = requests.get(api, headers=headers)
         soup = BeautifulSoup(response.text, "html.parser")
         articles = soup.select("article.bg-base-300")
 
+        # Create a list of mangas from the articles
         for article in articles:
             title_tag = article.select_one("section a[href*='/series/']")
             author_tag = article.select_one("a[href*='/search?author=']")
@@ -39,6 +41,6 @@ def get_manga_json(number_of_pages=10):
                 })
         print(f"Scraped {i} pages && {len(results)} mangas")
 
-    # print(json.dumps(results, indent=2))
+    # Save the results to a .json file
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
