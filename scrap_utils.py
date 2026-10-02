@@ -6,6 +6,14 @@ headers = {
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "en-US,en;q=0.9",
 }
+def get_link(title):
+    api = f"https://weebcentral.com/search/data?display_mode=Full+Display&display_mode=Full%20Display&author=&text={title}&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False&included_type=Manga"
+    response = requests.get(api, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+    articles = soup.select("article.bg-base-300")
+    article = articles[0]
+    title_tag = article.select_one("section a[href*='/series/']")
+    return title_tag["href"]
 
 def get_last_chapter(url):
     reponse = requests.get(url, headers=headers)
@@ -18,4 +26,9 @@ def get_last_chapter(url):
     else:
         return -1
 
+def get_last_chapter_by_name(title):
+    link = get_link(title)
+    return get_last_chapter(link)
+
 # print(f"last chapter : {get_last_chapter("https://weebcentral.com/series/01J76XY7KWP8KX5RFGVZY5TR95/Shingeki-No-Kyojin")}")
+# print(f"last chapter : {get_last_chapter_by_name('bleach')}")
