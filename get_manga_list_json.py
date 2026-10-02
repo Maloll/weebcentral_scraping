@@ -14,7 +14,7 @@ def get_manga_json(number_of_pages=10, save=True):
         print("Error: Number of pages must be greater than 0")
 
     results = []
-    for i in range(1, number_of_pages):
+    for i in range(0, number_of_pages):
         offset = i * 32
         api = f"https://weebcentral.com/search/data?limit=32&offset={offset}&display_mode=Full+Display&display_mode=Full+Display&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False&included_type=Manga"
 
@@ -39,7 +39,7 @@ def get_manga_json(number_of_pages=10, save=True):
                     "format": clean_datas[2],
                     "tags": clean_datas[3:],
                 })
-        print(f"Scraped {i} pages && {len(results)} mangas")
+        print(f"Scraped {i+1} pages && {len(results)} mangas")
 
     if save:
         # Save the results to a .json file
