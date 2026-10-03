@@ -1,5 +1,6 @@
 import requests
 import json
+import argparse
 from bs4 import BeautifulSoup
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -8,14 +9,14 @@ headers = {
 }
 
 # Get a manga list from weebcentral
-def get_manga_json(number_of_pages=10, save=True):
+def get_manga_json(number_of_pages=10, save=True, file_name="data"):
     if number_of_pages < 1:
         number_of_pages = 1
         print("Error: Number of pages must be greater than 0")
 
     results = []
     for i in range(0, number_of_pages):
-        offset = i * 32
+        offset = i * 32 # Weebcentral loads 32 by 32
         api = f"https://weebcentral.com/search/data?limit=32&offset={offset}&display_mode=Full+Display&display_mode=Full+Display&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False&included_type=Manga"
 
         # Get data from api
@@ -29,6 +30,8 @@ def get_manga_json(number_of_pages=10, save=True):
             author_tag = article.select_one("a[href*='/search?author=']")
             datas = article.select("section div.opacity-70 span")
             clean_datas = [data.get_text(strip=True).replace(",", "") for data in datas]
+
+            # Store everything in results[]
             if title_tag:
                 results.append({
                     "title": title_tag.get_text(strip=True).replace("Official", ""),
@@ -43,7 +46,17 @@ def get_manga_json(number_of_pages=10, save=True):
 
     if save:
         # Save the results to a .json file
-        with open("data.json", "w", encoding="utf-8") as f:
+        with open(f"{file_name}.json", "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
+        print(f"> Saved {len(results)} mangas in {file_name}.json")
 
     return results
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Collect mangas from weebcentral")
+    parser.add_argument('-n','--number', type=int, default=10)
+    parser.add_argument('-s', '--save', type=str, default=None)
+
+    args = parser.parse_args()
+    save = True if args.save != None else False
+    get_manga_json(args.number, save, args.save)
