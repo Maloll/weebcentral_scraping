@@ -53,7 +53,7 @@ python get_manga_list_json.py -n 2 -s data
 
 ## 🐍 Importation dans un script Python
 
-Tu peux directement importer les fonctions dans un autre projet (ex: API FastAPI, script cron) :
+Tu peux directement importer les fonctions dans un autre projet :
 
 ```python
 from scrap_utils import get_last_chapter_by_name
