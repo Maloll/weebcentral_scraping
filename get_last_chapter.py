@@ -50,7 +50,7 @@ def get_last_chapter(link):
             last_chapter = soup.select("#chapter-list div a span.grow span")[0].get_text(strip=True)
 
             # Remove letters from chapter number
-            last_chapter_clean = re.sub(r'[a-zA-Z]', '', last_chapter)
+            last_chapter_clean = re.sub(r'[a-zA-Z]','',last_chapter).strip()
 
             # Return chapter number and link
             return {"link": last_chapter_link, "chapter": last_chapter_clean}
