@@ -25,7 +25,7 @@ pip install requests beautifulsoup4
 python get_last_chapter.py -t "Bleach"
 
 # By link
-python get_last_chapter.py -l "[https://weebcentral.com/series/01J76XYYG1QRCBW24R5H3Y42R4/Bleach](https://weebcentral.com/series/01J76XYYG1QRCBW24R5H3Y42R4/Bleach)"
+python get_last_chapter.py -l "https://weebcentral.com/series/01J76XY7E4JCPK14V53BVQWD9Y/Bleach"
 ```
 
 **Options:**
