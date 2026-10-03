@@ -43,7 +43,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.title:
-        print(f"Last chapter of {args.title} : {get_last_chapter_by_name(args.title)}")
+        print(f">>>  {get_last_chapter_by_name(args.title)}")
 
     if args.link:
-        print(f"Last chapter of {args.link} : {get_last_chapter(args.link)}")
+        print(f">>>  {get_last_chapter(args.link)}")
