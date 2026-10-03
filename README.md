@@ -73,3 +73,5 @@ print(f"Lire ici : {data['link']}")
 | :----------------------- | :------------------------------------------------------ |
 | `get_manga_list_json.py` | Scrape le catalogue complet et l'exporte en JSON        |
 | `scrap_utils.py`         | Fonctions de recherche & extraction du dernier chapitre |
+
+Made by [Maloll](https://discord.com/users/970348301448806430) ❤️
