@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import argparse
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept": "application/json, text/plain, */*",
@@ -34,5 +35,15 @@ def get_last_chapter_by_name(title):
     link = get_link(title)
     return get_last_chapter(link)
 
-# print(f"last chapter : {get_last_chapter("https://weebcentral.com/series/01J76XY7KWP8KX5RFGVZY5TR95/Shingeki-No-Kyojin")}")
-# print(f"last chapter : {get_last_chapter_by_name('bleach')}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Scrap weebcentral for last manga chapter number & link")
+    parser.add_argument('-t', '--title', type=str, default=None)
+    parser.add_argument('-l', '--link', type=str, default=None)
+    args = parser.parse_args()
+
+    if args.title:
+        print(f"Last chapter of {args.title} : {get_last_chapter_by_name(args.title)}")
+
+    if args.link:
+        print(f"Last chapter of {args.link} : {get_last_chapter(args.link)}")
