@@ -14,7 +14,7 @@ def get_link(title):
     api = (
         f"https://weebcentral.com/search/data?display_mode=Full+Display"
         f"&display_mode=Full%20Display&author=&text={title}"
-        f"&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False&included_type=Manga"
+        f"&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False"
     )
 
     response = requests.get(api, headers=headers)
@@ -33,7 +33,7 @@ def get_link(title):
 # Get last chapter from manga link
 def get_last_chapter(link):
 
-    # Check if link exists and  is valid
+    # Check if link exists and is valid
     if link and link != None and link != "" and link != "None":
         link_valid = re.match(r'https://weebcentral.com/series/[A-Z0-9]{26}/.*', link)
         if not link_valid:
