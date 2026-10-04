@@ -97,6 +97,7 @@ print(f"Read here: {data['link']}")
 | File                     | Role                                                 |
 | :----------------------- | :--------------------------------------------------- |
 | `get_manga_list_json.py` | Scrapes the full catalog and exports it to JSON      |
-| `scrap_utils.py`         | Search & extraction functions for the latest chapter |
+| `get_last_chapter.py`    | Search & extraction functions for the latest chapter |
+| `get_manga_list.py`      | Search & extraction functions for chapter list       |
 
 Made by [Maloll](https://discord.com/users/970348301448806430) ❤️
