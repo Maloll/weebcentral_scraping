@@ -16,16 +16,18 @@ pip install requests beautifulsoup4
 
 ## 🚀 Usage
 
-### 1. `get_last_chapter.py`
+### 1. `get_chapter_list.py`
 
-> Scrape WeebCentral series page for the latest manga chapter number & link
+> Scrape WeebCentral series page for full chapter list (link, number, time)
 
 ```bash
 # By title
-python get_last_chapter.py -t "Bleach"
+python get_chapter_list.py -t "Bleach"
+# 1.5 seconds to run
 
 # By link
-python get_last_chapter.py -l "https://weebcentral.com/series/01J76XY7E4JCPK14V53BVQWD9Y/Bleach"
+python get_chapter_list.py -l "https://weebcentral.com/series/01J76XY7E4JCPK14V53BVQWD9Y/Bleach"
+# 1 second to run
 ```
 
 **Options:**
@@ -51,16 +53,39 @@ python get_manga_list_json.py -n 2 -s data
 
 ---
 
+### 3. `get_last_chapter.py`
+
+> Scrape WeebCentral series page for the latest manga chapter number & link
+
+```bash
+# By title
+python get_last_chapter.py -t "Bleach"
+
+# By link
+python get_last_chapter.py -l "https://weebcentral.com/series/01J76XY7E4JCPK14V53BVQWD9Y/Bleach"
+```
+
+**Options:**
+
+- `-t, --title TITLE` : Manga title to search (e.g. 'Bleach')
+- `-l, --link LINK` : WeebCentral manga series URL
+
+---
+
 ## 🐍 Importing into a Python Script
 
 You can directly import the functions into another project:
 
 ```python
-from scrap_utils import get_last_chapter_by_name
+from get_chapter_list import get_chapter_list_by_name, get_chapter_list
+from get_last_chapter import get_last_chapter_by_name, get_last_chapter
+
+# Fetch chapter list
+data = get_chapter_list_by_name("Chainsaw Man")
+print(f"Chapters: {data}")
 
 # Fetch latest chapter info
 data = get_last_chapter_by_name("Chainsaw Man")
-
 print(f"Latest chapter: {data['chapter']}")
 print(f"Read here: {data['link']}")
 ```
