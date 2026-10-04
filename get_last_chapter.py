@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import argparse
+import json
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -50,7 +51,7 @@ def get_last_chapter(link):
             last_chapter = soup.select("#chapter-list div a span.grow span")[0].get_text(strip=True)
 
             # Remove letters from chapter number
-            last_chapter_clean = re.sub(r'[a-zA-Z]','',last_chapter).strip()
+            last_chapter_clean = extract_chapter_number(last_chapter.strip())
 
             # Return chapter number and link
             return {"link": last_chapter_link, "chapter": last_chapter_clean}
@@ -71,6 +72,12 @@ def get_last_chapter_by_name(title):
     return get_last_chapter(link)
 
 
+def extract_chapter_number(chapter_str) :
+    pattern = re.compile(r"[^A-Za-z\s]*[0-9]$")
+    match = pattern.search(chapter_str)
+    chapter = match.group(0) if match else "INVALID"
+    return re.sub(r'[^0-9]','',chapter)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scrap weebcentral serie page for last manga chapter number & link")
     parser.add_argument('-t', '--title', type=str, default=None, help="Manga title to search (e.g. 'Bleach')")
@@ -78,7 +85,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.title:
-        print(f">>>  {get_last_chapter_by_name(args.title)}")
-
+        # print(f">>>  {get_last_chapter_by_name(args.title)}")
+        print(json.dumps(get_last_chapter_by_name(args.title)))
     if args.link:
-        print(f">>>  {get_last_chapter(args.link)}")
+        # print(f">>>  {get_last_chapter(args.link)}")
+        print(json.dumps(get_last_chapter(args.link)))
