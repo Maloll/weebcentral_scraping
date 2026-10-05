@@ -20,7 +20,7 @@ def get_series_link(title, debug=False):
     api = (
             f"https://weebcentral.com/search/data?display_mode=Full+Display"
             f"&display_mode=Full%20Display&author=&text={title}"
-            f"&sort=Popularity&order=Descending&official=Any&anime=Any&adult=False"
+            f"&sort=Popularity&order=Descending&official=Any&anime=Any&adult=Any"
         )
 
     response = requests.get(api, headers=headers)
