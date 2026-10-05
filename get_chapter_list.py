@@ -16,7 +16,7 @@ def extract_chapter_number(chapter_str) :
     chapter = match.group(0) if match else "INVALID"
     return re.sub(r'[^0-9\.\,\;]','',chapter)
 
-def get_series_link(title):
+def get_series_link(title, debug=False):
     api = (
             f"https://weebcentral.com/search/data?display_mode=Full+Display"
             f"&display_mode=Full%20Display&author=&text={title}"
@@ -32,20 +32,26 @@ def get_series_link(title):
             title_tag = article.select_one("section a[href*='/series/']")
             return title_tag["href"]
         except IndexError:
+            if debug: print(f"# Error: Title not found | Title: {title}")
             return None
     else:
         return None
 
-def get_chapter_list_by_name(title):
+def get_chapter_list_by_name(title, debug):
     # Cleans title to remove special characters (weebcentral search API doesn't like them)
     title = re.sub(r'[^a-zA-Z0-9\s]', ' ', title)
 
     # Collect manga link from title
-    link = get_series_link(title)
-    return get_chapter_list(link)
+    link = get_series_link(title, debug)
+    return get_chapter_list(link, debug)
 
-def get_chapter_list(link):
-    series_id = re.findall(r'[A-Za-z0-9]{26}', link)[0]
+def get_chapter_list(link, debug=False):
+    if link :
+        series_id = re.findall(r'[A-Za-z0-9]{26}', link)[0]
+    else:
+        if debug: print(f"# Error: link invalid | Link: {link}")
+        return "Invalid link"
+
     API = f"https://weebcentral.com/series/{series_id}/full-chapter-list"
     # print(f">>>  API: {API}")
     reponse = requests.get(API, headers=headers)
@@ -65,12 +71,12 @@ def get_chapter_list(link):
                 chapter_list.append({"link": chapter_link, "chapter": clean_chapter_number, "time": time})
 
             except IndexError or KeyError:
-                print(f"# Error: IndexError or KeyError \n# Chapter: {i}")
+                if debug: print(f"# Error: IndexError or KeyError \n# Chapter: {i}")
 
         return chapter_list
 
     else:
-        print(f"# Error: Failed to fetch chapter number \n# Status code: {reponse.status_code}")
+        if debug: print(f"# Error: Failed to fetch chapter number \n# Status code: {reponse.status_code}")
         return "Failed to fetch"
 
 
@@ -78,11 +84,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scrap weebcentral series for chapter list (link, number, time)")
     parser.add_argument('-t', '--title', type=str, default=None, help="Manga title to search (e.g. 'Bleach')")
     parser.add_argument('-l', '--link', type=str, default=None, help="WeebCentral manga series URL (format: 'https://weebcentral.com/series/<26 random characters>/(optional)<title>')")
+    parser.add_argument('-d', '--debug', action='store_true', help="Print debug information")
     args = parser.parse_args()
 
+    debug = True if args.debug else False
     if args.title:
         # print(f">>>  {get_last_chapter_by_name(args.title)}")
-        print(json.dumps(get_chapter_list_by_name(args.title)))
+        print(json.dumps(get_chapter_list_by_name(args.title, debug)))
     if args.link:
         # print(f">>>  {get_last_chapter(args.link)}")
-        print(json.dumps(get_chapter_list(args.link)))
+        print(json.dumps(get_chapter_list(args.link, debug)))
